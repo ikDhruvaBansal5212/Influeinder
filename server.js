@@ -40,7 +40,7 @@ let config = {
     password: "iU6GQReBpyDbfVi5tDpd",
     database: "br9kouxwmtcioajrzr9d",
     dateStrings: true,
-    KeepAliveInitialDelay : 10000,
+    keepAliveInitialDelay : 10000,
     enableKeepAlive : true
 }
 
