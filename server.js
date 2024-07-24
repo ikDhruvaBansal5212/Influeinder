@@ -29,7 +29,7 @@ app.use(express.urlencoded("true"));
 //git branch -M main
 //git remote add origin https://github.com/ikDhruvaBansal5212/Influeinder.git
 //git push -u origin main
-// git add .
+// git add . 
 
 
 
@@ -40,8 +40,8 @@ let config = {
     password: "iU6GQReBpyDbfVi5tDpd",
     database: "br9kouxwmtcioajrzr9d",
     dateStrings: true,
-    //KeepAliveInitialDelay : 10000,
-    enableKeepAlive : true,
+    KeepAliveInitialDelay : 10000,
+    enableKeepAlive : true
 }
 
 // let config={
