@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <!-- jquery link -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script>
+    function logout() {
+      localStorage.removeItem("activeuser");
+      location.href = "index.html";
+    }
+
+    function chk(){
+      console.log("chla");
+    }
+  </script>
+
+
+
+  <script>
+    $(document).ready(function () {
+
+      let active = localStorage.getItem("activeuser");
+      
+      $("#welcome").html(active);
+
+
+      $("#txtemail").val(active).prop("readonly", true)
+
+      $("#booking").click(function () {
+       
+        let obj = {
+          type: "get",
+          url: "/post-booking-process",
+          data: {
+            txtemail: $("#txtemail").val(),
+            events: $("#title").val(),
+            date: $("#date").val(),
+            tos: $("#tos").val(),
+            city: $("#city").val(),
+            venue: $("#venue").val(),
+          }
+        }
+
+        $.ajax(obj).done(function (resp) {
+          alert(resp);
+          //$("#msgSignup").html(resp);
+
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+
+      })
+
+      $("#reppwd").blur(function () {
+        if ($(this).val() == $(newpwd).val()) {
+          document.getElementById("updatepwd").disabled = false;
+        }
+      })
+
+      $("#updatepwd").click(function () {
+        let obj = {
+          type: "get",
+          url: "/update-pwd-process",
+          data: {
+            email: $("#email").val(),
+            oldpwd: $("#oldpwd").val(),
+            newpwd: $("#newpwd").val(),
+            reppwd: $("#reppwd").val(),
+          }
+        }
+
+        $.ajax(obj).done(function (resp) {
+          alert(resp);
+          //$("#msgSignup").html(resp);
+
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+
+      })
+
+      $("#validate").click(function () {
+
+        document.getElementById("newpwd").disabled = false;
+        document.getElementById("reppwd").disabled = false;
+
+        let obj = {
+          type: "get",
+          url: "/validate-old-password",
+          data: {
+            email: $("#email").val(),
+            oldpwd: $("#oldpwd").val(),
+
+          }
+        }
+
+        $.ajax(obj).done(function (resp) {
+          console.log("chl pada");
+
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+      })
+
+
+    })
+
+
+
+  </script>
+
+  <script>
+    var module = angular.module("mymodule", []);
+    var controller = module.controller("mycontroller", function ($scope, $http) {
+
+      $scope.jsonarrayall;
+
+      $scope.eventbyemail = function () {
+        let email = localStorage.getItem("activeuser");
+
+        let url = "/eventbyemail?email=" + email;
+
+        $http.get(url).then(alliswell, notwell);
+
+        function alliswell(response) {
+
+          $scope.jsonarrayall = response.data;
+         
+        }
+        function notwell(err) {
+          alert("nhi chala");
+        }
+      }
+
+      $scope.eventbyemaildone = function () {
+        let email = localStorage.getItem("activeuser");
+
+        let url = "/eventbyemaildone?email=" + email;
+
+        $http.get(url).then(alliswell, notwell);
+
+        function alliswell(response) {
+
+          $scope.jsonarrayalldone = response.data;
+         
+        }
+        function notwell(err) {
+          alert("nhi chala");
+        }
+
+      }
+
+      $scope.init = function () {
+
+        $scope.eventbyemail();
+
+        $scope.eventbyemaildone();
+
+        
+
+      }
+
+      
+      $scope.deleteevent = function (email) {
+
+        let url = "/deleteevent?email=" + email;
+
+        $http.get(url).then(alliswell, notwell);
+
+        function alliswell(response) {
+
+          $scope.eventbyemail();
+        }
+        function notwell(err) {
+          alert("nhi chala");
+        }
+
+      }
+
+    });
+  </script>
+
+</head>
+
+<body style="background-color: #d1d1d1;" ng-app="mymodule" ng-controller="mycontroller" ng-init="init();" >
+
+  <nav class="navbar" style="background-color: #d1d1d1;">
+    <div class="container-fluid" style="background-color: #d1d1d1;">
+      <a class="navbar-brand" href="#">
+        <img src="/pics/2.jpg" alt="Logo" width="40" height="30" class="d-inline-block align-text-top"
+          style="margin-right: 30px;">
+        influeinder
+      </a>
+      <form class="d-flex" role="search">
+        <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+
+        <a href="/our-services-page" class="btn btn-outline-success" tabindex="-1" role="button"
+        aria-disabled="true" style="margin-left:10px">Our Services</a>
+
+           <a href="/our-team-page" class="btn btn-outline-success" tabindex="-1" role="button"
+                        aria-disabled="true" style="margin-left:10px">Our Team</a>
+
+
+        <a href="/reach-us-page" class="btn btn-outline-success" tabindex="-1" role="button" aria-disabled="true"
+          style="margin-left:10px">Reach us</a>
+
+        <button class="btn btn-outline-success" type="button" style="margin-left:10px" onclick="logout()">LOG
+          OUT</button>
+
+      </form>
+    </div>
+  </nav>
+
+  <h1 style="height: 50px; background-color: #d1d1d1;">
+    <div class="1">
+    <center>
+      <span>welcome</span>
+      <span id="welcome">*</span>
+    </center>
+    </div>
+  </h1>
+  <center>
+    <div  class="container" style="max-width:1200px;">
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col">
+          <div class="card , pt-4" style="border: 2px solid black; border-radius: 20px 70px 70px 20px;">
+            <!--<img src="pics/influncer-marketing 1.jpeg" class="card-img-top" alt="...">-->
+            <i class="fa-regular fa-user  fa-8x"></i>
+            <hr>
+            <div class="card-body">
+              <h5 class="card-title">profile </h5>
+              <p class="card-text">information is everything . save/update your profile information</p>
+              <a href="/profile-page" class="btn btn-primary">Go to profile</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card , pt-4" style="border: 2px solid black; border-radius: 70px 70px 70px 70px;">
+            <i class="fa-solid fa-book  fa-8x"></i> <hr>
+            <div class="card-body">
+              <h5 class="card-title">bookings info</h5>
+              <p class="card-text">money is everything,check your future bookings and events here now</p>
+
+
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                bookings
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">bookED events</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+
+                    <div class="modal-body">
+
+                      <form class="row g-3">
+                        <div class="col-md-15">
+                          <label for="txtemail" class="form-label">Email ID</label>
+                          <input type="text" class="form-control" id="txtemail">
+                        </div>
+                        <div class="col-md-15">
+                          <label for="title" class="form-label">Event title</label>
+                          <input type="text" class="form-control" id="title">
+                        </div>
+                        <div class="col-6">
+                          <label for="date" class="form-label">Date</label>
+                          <input type="date" class="form-control" id="date">
+                        </div>
+                        <div class="col-6">
+                          <label for="tos" class="form-label">start time</label>
+                          <input type="time" class="form-control" id="tos">
+                        </div>
+
+
+                        <div class="col-md-6">
+                          <label for="city" class="form-label">City</label>
+                          <input type="text" class="form-control" id="city">
+                        </div>
+
+
+                        <div class="col-md-6">
+                          <label for="venue" class="form-label">venue</label>
+                          <input type="text" class="form-control" id="venue">
+                        </div>
+
+                        <center>
+                          <div class="col-md-3">
+                            <button type="button" class="btn btn-primary" id="booking">Post Event</button>
+                          </div>
+                        </center>
+
+
+                      </form>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+        
+        <div class="col">
+          <div class="card , pt-4" style="border: 2px solid black; border-radius: 70px 70px 70px 70px;">
+            <i class="fa-solid fa-people-roof  fa-8x"></i> <hr>
+            <div class="card-body">
+              <h5 class="card-title">Event Managarer</h5>
+              <p class="card-text"> mananage and update your upcoming events and bookings , now</p>
+              <a href="/event-manager-page" class="btn btn-primary">influ-finder</a>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col">
+          <div class="card , pt-4" style="border: 2px solid black; border-radius: 70px 20px 20px 70px;">
+            <i class="fa-solid fa-gear fa-spin fa-8x"></i> <hr>
+            <div class="card-body">
+              <h5 class="card-title">Settings</h5>
+              <p class="card-text">update you uname and password constantly for  enhanching security purposes</p>
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setting">
+                Settings
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="setting" tabindex="-1" aria-labelledby="settingsLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Settings</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+
+                    <div class="modal-body">
+                      <form class="row g-2">
+                        <div class="col-md-20">
+                          <label for="email" class="form-label">Email id</label>
+                          <input type="text" class="form-control" id="email">
+                        </div>
+                        <div class="col-md-6">
+                          <label for="oldpwd" class="form-label">old Password</label>
+                          <input type="password" class="form-control" id="oldpwd">
+                        </div>
+
+
+                        <div class="col-md-6">
+                          <label for="validate" class="form-label">validate oldpwd</label><br>
+                          <button type="button" class="btn btn-primary" id="validate">validate</button>
+                        </div>
+
+
+                        <div class="col-md-20">
+                          <label for="newpwd" class="form-label">new Password</label>
+                          <input type="password" class="form-control" id="newpwd" disabled>
+                        </div>
+                        <div class="col-md-20">
+                          <label for="reppwd" class="form-label">rep Password</label>
+                          <input type="password" class="form-control" id="reppwd" disabled>
+                        </div>
+
+                        <center>
+                          <div class="col-md-3">
+                            <button type="button" class="btn btn-primary" id="updatepwd" disabled>update</button>
+                          </div>
+                        </center>
+
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        <!-- <div class="col">
+          <div class="card">
+            <img src="pics/influncer-marketing 1.jpeg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">influ-finder</h5>
+              <p class="card-text">search and find your favourite influencer right now and book them</p>
+              <a href="/influ-finder-page" class="btn btn-primary">influ-finder</a>
+            </div>
+          </div>
+        </div>-->
+
+       
+
+
+      </div>
+    </div>
+  </center>
+
+
+  <div style="background-color:lightgray;">
+    <div class="display-4 , my-4 p-4">
+      <center>
+        <marquee behavior="alternate" direction="right">
+          <input type="button" value=" Your PRE/POST Bookings " ng-click="eventbyemail();" style="border: 0px; background-color: #d1d1d1;">
+         
+        </marquee>
+      </center>
+    </div>
+
+    <div class=" row-cols-4 row-cols-md-1 g-1 , container" style="max-width: 1100px;">
+      <div class="card mb-3" style="max-width: 100%; background-color:lightgray; border: none;" ng-repeat="obj in jsonarrayall">
+        <div class="row g-0" style="background-color: #CD5114; border: 2px solid red; border-radius: 100px 40px 100px 30px ;">
+          <div class="col-md-1">
+            <div class="card-body">
+              <h5 class="card-title , mt-3">
+                <center>
+                  {{$index+1}}
+                </center>
+              </h5>
+
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card-body">
+              <h2 class="card-title , mt-3">
+               <center> events:-{{obj.events}}</center>
+              </h2>
+
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="card-body">
+              <h2 class="card-title , mt-4">
+               <center><i class="fa-regular fa-hourglass-half fa-xl fa-spin"></i></center>
+              </h2>
+
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="card-body">
+
+            
+                <p class="card-text , ms-5">
+                
+                  Date of event:-{{obj.doe}} <br>
+                  Time of event:-{{obj.tos}} <br>
+                  City:-{{obj.city}} <br>
+                  Venue:-{{obj.venue}}
+  
+                </p>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container" style="background-color:lightgray; max-width: 1100px;">
+    
+    <div class=" row-cols-4 row-cols-md-1 g-1 ">
+      <div class="card mb-3" style="max-width: 100%; background-color:lightgray; border: none;" ng-repeat="obj in jsonarrayalldone">
+        <div class="row g-0" style="background-color: lightgreen; border: 2px solid red; border-radius: 100px 40px 100px 30px ;">
+          <div class="col-md-1">
+            <div class="card-body">
+              <h5 class="card-title , mt-3">
+                <center>
+                  {{$index+1}}
+                </center>
+              </h5>
+
+            </div>
+          </div>
+
+          
+
+          <div class="col-md-4">
+            <div class="card-body">
+              <h2 class="card-title , mt-3">
+               <center> events:-{{obj.events}}</center>
+              </h2>
+
+            </div>
+
+            
+          </div>
+          <div class="col-md-2">
+            <div class="card-body">
+              <h2 class="card-title , mt-4">
+               <center><i class="fa-solid fa-check fa-xl"></i></center>
+              </h2>
+
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card-body">
+
+             
+                <p class="card-text , ms-5">
+                
+                  Date of event:-{{obj.doe}} <br>
+                  Time of event:-{{obj.tos}} <br>
+                  City:-{{obj.city}} <br>
+                  Venue:-{{obj.venue}}
+  
+  
+                </p>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  
+ 
+
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- jquery link -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+
+
+            let active = localStorage.getItem("activeuser");
+            $("#Email").val(active).prop( true);
+
+            $("#submit").click(function () {    
+                    
+            
+                    let obj = {
+                        type: "get",
+                        url: "/contactus-process",
+                        data: {
+                            name: $("#name").val(),
+                            Subject: $("#Subject").val(),
+                            Email: $("#Email").val(),
+                            description: $("#description").val(),
+                        }
+                    }
+                    $.ajax(obj).done(function (resp) {
+                        alert(resp);
+                         
+                        
+                       
+    
+                    }).fail(function (err) {
+                        alert(err.statusText);
+                    })
+    
+                })
+    
+
+
+
+
+        })
+
+
+    </script>
+
+
+
+
+
+</head>
+
+<body>
+    <div style="background-color: whitesmoke">
+
+
+        <nav class="navbar" style="background-color: #d1d1d1;">
+            <div class="container-fluid" style="background-color: #d1d1d1;">
+                <a class="navbar-brand" href="#">
+                    <img src="/pics/2.jpg" alt="Logo" width="40" height="30" class="d-inline-block align-text-top"
+                        style="margin-right: 30px;">
+                    influeinder
+                </a>
+                <form class="d-flex" role="search">
+                    <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+                    <button class="btn btn-outline-success" type="button" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Signup</button>
+
+                    <button class="btn btn-outline-success" type="button" style="margin-left:10px"
+                        data-bs-target="#exampleModallog" data-bs-toggle="modal">Login</button>
+
+                    <button class="btn btn-outline-success" type="button" style="margin-left:10px " id="dash">our
+                        services</button>
+
+                    <button class="btn btn-outline-success" type="button" style="margin-left:10px"
+                        data-bs-target="#adminpanel" data-bs-toggle="modal">our team</button>
+
+                    <a href="/reach-us-page" class="btn btn-outline-success" tabindex="-1" role="button"
+                        aria-disabled="true" style="margin-left:10px">Reach us</a>
+
+
+                </form>
+            </div>
+        </nav>
+
+        <!-- Modal Signup-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Signup here<span id="msgSignup">*</span>
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                <input type="email" id="txtEmail" name="txtEmail" class="form-control"
+                                    id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Password</label>
+                                <input type="password" id="pwd" name="pwd" class="form-control"
+                                    id="exampleInputPassword1">
+                            </div>
+                            <!-- <div class="mb-3 form-check">
+                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        </div> -->
+
+                            <select class="form-select" aria-label="Default select example" id="combo" name="combo">
+                                <option selected>Select your category</option>
+                                <option value="Client">Client</option>
+                                <option value="Influencer" name="infl" id="infl">Influencer</option>
+
+                            </select>
+                            <br>
+
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="sgnup">Signup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Login -->
+
+        <div class="modal fade" id="exampleModallog" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Login here</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                <input type="email" id="txtEmaill" name="txtEmaill" class="form-control"
+                                    id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Password</label>
+                                <input type="password" id="txtPwd" name="txtPwd" class="form-control"
+                                    id="exampleInputPassword1">
+                            </div>
+
+                            <span id="logspan">*</span>
+
+                            <br>
+
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="login">Login</button>
+                        <br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="position-relative">
+                <img src="pics/contactus/contact-cover.jpg" class="img-fluid" alt="...">
+                <div class="position-absolute top-50 start-0">
+
+                    <h1 class="display-1">
+                        <strong>
+                            Contact US
+                        </strong>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div style="height: 1000px; width: 100%;">
+            <div>
+                <div style=" width: 70%; height: 1950px; float: left;">
+
+                    <div class="mx-auto my-5 p-0" style="width:70%;">
+                        <form class="row g-3 , p-2 " style="border: 1px solid darkgrey; margin-bottom: 120px;">
+                            <h5>GET IN TOUCH</h5>
+                            <h6>Feel free to drop us a line below. Please note that most questions are answered in the
+                                FAQ.</h6>
+
+                            <div class="col-12">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name">
+                            </div>
+                            <div class="col-12">
+                                <label for="Subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="Subject">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="Email" >
+                            </div>
+                            <div class="col-md-12">
+                                <label for="txt" class="form-label">type your message here</label>
+                                <input type="text" class="form-control" id="description" name="description">
+                            </div>
+
+
+                            <div class="col-12">
+                                <button type="button" class="btn btn-primary" id="submit">submit</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="mx-auto my-5 p-0" style="width:75%;">
+                        <div class="card mb-3">
+                            <img src="pics/contactus/4.png" class="card-img-top" alt="...">
+                        </div>
+
+
+                    </div>
+                    <img src="pics/contactus/7.webp" class="rounded mx-auto d-block" alt="..."
+                        style="margin-top: 40px;">
+                    <img src="pics/contactus/5.png" class="rounded mx-auto d-block" alt="..." style="margin-top: 40px;">
+
+
+                    <div class="mx-auto my-5 p-0" style="width:101.7%;">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="true" href="#">Terms & Conditions</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Privacy Policy</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" aria-disabled="true">Contact us</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">© 2024 - 2024 influeinder, developed by the dhruv bansal</h5>
+                                <p class="card-text">All rights reserved.</p>
+                                <a href="#" class="btn btn-primary">write for us</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                </div>
+
+
+            </div>
+            <div class="d-flex justify-content-end" style="width: 30%; float:right; ">
+                <img src="pics/contactus/2.jpg" class="img-fluid" alt="...">
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>

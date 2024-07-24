@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <!-- jquery link -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  <script>
+    function doPrev(fileCtrl, imgPrev) {
+      let [file] = fileCtrl.files
+      if (file) {
+        imgPrev.src = URL.createObjectURL(file)
+      }
+    }
+
+
+
+  </script>
+  <script>
+    $(document).ready(function () {
+
+      let active = localStorage.getItem("activeuser");
+      $("#txtemail").val(active).prop("readonly", true);
+
+     
+
+      
+
+      $("#Search").click(function () {
+        let obj = {
+          type: "get",
+          url: "/user-details",
+          data: {
+            txtemail: $("#txtemail").val(),
+          }
+        }
+        $.ajax(obj).done(function (jsonAry) {
+          if (jsonAry.length == 0) {
+            document.getElementById("savedata").disabled=false;
+            document.getElementById("update").disabled=true;
+            alert("Invalid ID");
+            return;
+          }
+          alert(JSON.stringify(jsonAry));
+          $("#uname").val(jsonAry[0].uname);//table colu. wala
+          $("#gender").val(jsonAry[0].gender);//table colu. wala
+          $("#dob").val(jsonAry[0].dob);
+          $("#address").val(jsonAry[0].address);
+          $("#city").val(jsonAry[0].city);
+          $("#contact").val(jsonAry[0].contact);
+          $("#field").val(jsonAry[0].field);
+          $("#instagram").val(jsonAry[0].insta);
+          $("#facebook").val(jsonAry[0].facebook);
+          $("#youtube").val(jsonAry[0].youtube);
+          $("#prev").prop("src", "uploads/" + jsonAry[0].ppic);
+
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+
+      });
+
+      
+
+
+
+    })
+
+
+
+
+
+
+
+  </script>
+
+</head>
+
+<body>
+
+  <div style="margin-left: 200px; margin-right: 200px; margin-top: 20px;">
+    <form class="row g-3" method="post" enctype="multipart/form-data">
+
+
+      <div class="col-md-6">
+        <label for="txtemail" class="form-label">Email</label>
+        <input type="text" class="form-control" id="txtemail" name="txtemail">
+      </div>
+
+      <div class="col-md-3">
+        <br>
+        <input type="Button" value="Search" id="Search">
+      </div>
+
+      <div class="col-md-3">
+        Profile Pic <input type="file" name="picpath" id="picpath" onchange="doPrev(this,prev);" required >
+        <img src="" id="prev" alt="" width="100" height="100">
+      </div>
+
+
+      <div class="col-md-4">
+        <label for="uname" class="form-label">name</label>
+        <input type="text" class="form-control" id="uname" name="uname" required>
+      </div>
+
+
+      <div class="col-4">
+        <label for="gender" class="form-label">gender</label>
+        <select class="form-select" aria-label="Default select example" id="gender" name="gender" required>
+          <option value="male">male</option>
+          <option value="female">female</option>
+        </select>
+      </div>
+
+
+      <div class="col-4">
+        <label for="inputAddress2" class="form-label">dob</label>
+        <input type="date" class="form-control" id="dob" name="dob" placeholder="Apartment, studio, or floor" required>
+      </div>
+
+
+
+      <div class="col-md-5">
+        <label for="address" class="form-label">address</label>
+        <input type="text" class="form-control" id="address" name="address" required>
+      </div>
+
+
+      <div class="col-md-4">
+        <label for="city" class="form-label">city</label>
+        <select id="city" name="city" class="form-select" required>
+          <option selected>Choose your city</option>
+          <option value="bathinda">bathinda</option>
+          <option value="patiala">patiala</option>
+          <option value="chandigarh">chandigarh</option>
+          <option value="delhi">delhi</option>
+          <option value="ahmedabad">ahmedabad</option>
+          <option value="ludhiana">ludhiana</option>
+        </select>
+      </div>
+
+
+      <div class="col-md-3">
+        <label for="contact" class="form-label">contact</label>
+        <input type="text" class="form-control" id="contact" name="contact" required>
+      </div>
+
+      <div class="col-md-3">
+        <label for="field" class="form-label">field</label>
+        <select id="field" name="field" class="form-select" required>
+          <option selected>Choose your field</option>
+          <option value="influencer">influencer</option>
+          <option value="fashion">fashion</option>
+          <option value="health">health</option>
+          <option value="beauty">beauty</option>
+          <option value="sports">sports</option>
+          <option value="business">business</option>
+          <option value="share-market">share-market</option>
+          <option value="academics">academics</option>
+        </select>
+      </div>
+
+
+      <div class="col-md-3">
+        <label for="instagram" class="form-label">instagram</label>
+        <input type="text" class="form-control" id="instagram" name="instagram" required>
+      </div>
+
+      <div class="col-md-3">
+        <label for="facebook" class="form-label">facebook</label>
+        <input type="text" class="form-control" id="facebook" name="facebook" required>
+      </div>
+
+      <div class="col-md-3">
+        <label for="youtube" class="form-label">youtube</label>
+        <input type="text" class="form-control" id="youtube" name="youtube" required>
+      </div>
+
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-primary" formaction="/profile-save-process" id="savedata" disabled>save data</button>
+        <button type="submit" class="btn btn-primary" formaction="/profile-update-process" id="update">update data</button>
+      </div>
+    </form>
+
+  </div>
+
+
+
+
+  </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- jquery link -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        function doPrev(fileCtrl, imgPrev) {
+            let [file] = fileCtrl.files
+            if (file) {
+                imgPrev.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+
+            let active = localStorage.getItem("activeuser");
+            $("#txtemail").val(active).prop("readonly", true)
+
+
+
+            let pic = localStorage.getItem("jsonAry[0].picpath");
+            $("#picpath").val(pic).prop( true)
+
+            
+
+
+
+            $("#savedata").click(function () {
+                alert("hello");
+                let obj = {
+                    type: "post",
+                    url: "/Cprofile-save-process",
+                    data: {
+                        txtemail: $("#txtemail").val(),
+                        txtname: $("#txtname").val(),
+                        txtcity: $("#txtcity").val(),
+                        txtstate: $("#txtstate").val(),
+                        category: $("#category").val(),
+                        contact: $("#contact").val(),
+                        picpath: $("#picpath").val(),
+                    }
+                }
+
+                $.ajax(obj).done(function (resp) {
+                    alert(resp);
+                    //$("#msgSignup").html(resp);
+
+                }).fail(function (err) {
+                    alert(err.statusText);
+                })
+
+            })
+
+
+            $("#Search").click(function () {
+                let obj = {
+                    type: "get",
+                    url: "/Cprofile-details",
+                    data: {
+                        txtemail: $("#txtemail").val()
+                    }
+                }
+                $.ajax(obj).done(function (jsonAry) {
+                    if (jsonAry.length == 0) {
+                        document.getElementById("sts").disabled = false;
+                        document.getElementById("update").disabled = true;
+                        alert("Invalid ID");
+                        return;
+                    }
+                    alert(JSON.stringify(jsonAry));
+                    $("#txtname").val(jsonAry[0].uname);//table colu. wala
+                    $("#txtcity").val(jsonAry[0].city);//table colu. wala
+                    $("#txtstate").val(jsonAry[0].state);
+                    $("#category").val(jsonAry[0].org);
+                    $("#contact").val(jsonAry[0].mobile);
+                    $("#prev").prop("src", "uploads/" + jsonAry[0].picpath);
+
+
+                }).fail(function (err) {
+                    alert(err.statusText);
+                })
+
+            });
+
+
+        })
+
+
+
+
+
+
+
+    </script>
+
+
+
+</head>
+
+<body style="background-color: antiquewhite;">
+
+    <center>
+        <div style="margin-bottom: 10px;">
+            <h1>
+                Who AM I?
+            </h1>
+        </div>
+    </center>
+
+    <center>
+        <div class="container">
+            <form class="row g-3" style="border: 1px solid black; padding: 20px;" method="post"
+                enctype="multipart/form-data">
+                <div class="col-md-4">
+                    <label for="txtemail" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="txtemail" id="txtemail">
+                </div>
+
+                <div class="col-md-3">
+                    <br>
+                    <input type="Button" value="Search" id="Search">
+                </div>
+
+                <div class="col-md-4">
+                    <input type="file" name="picpath" id="picpath" onchange="doPrev(this,prev);" required>
+                    <img src="" id="prev" alt="" width="100" height="100">
+                </div>
+
+                <div class="col-4">
+                    <label for="txtname" class="form-label">NAME</label>
+                    <input type="text" class="form-control" name="txtname" id="txtname" required>
+                </div>
+                <div class="col-4">
+                    <label for="txtcity" class="form-label">city</label>
+                    <input type="text" class="form-control" name="txtcity" id="txtcity" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="txtstate" class="form-label">state</label>
+                    <input type="text" class="form-control" name="txtstate" id="txtstate" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="category" class="form-label">category</label>
+                    <select name="category" id="category" class="form-select">
+                        <option selected>Choosecategory</option>
+                        <option value="individual">individual</option>
+                        <option value="organization">organization</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="contact" class="form-label">contact</label>
+                    <input type="text" class="form-control" name="contact" id="contact" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary" formaction="/Cprofile-save-process" id="sts"
+                        disabled>Send to
+                        server</button>
+                    <button type="submit" class="btn btn-primary" formaction="/Cprofile-update-process"
+                        id="update">update data</button>
+                </div>
+        </div>
+
+        </form>
+        </div>
+    </center>
+
+
+
+</body>
+
+</html>

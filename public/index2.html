@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- jquery link -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
+
+        
+    <script>
+        $(document).ready(function () {
+
+
+            $("#sgnup").click(function () {        //alert("obj");
+                let obj = {
+                    type: "get",
+                    url: "/signup-process",
+                    data: {
+                        txtEmail: $("#txtEmail").val(),
+                        pwd: $("#pwd").val(),
+                        combo: $("#combo").val()
+                    }
+                }
+                $.ajax(obj).done(function (resp) {
+                    //alert(resp);
+                    $("#msgSignup").html(resp);
+
+                }).fail(function (err) {
+                    alert(err.statusText);
+                })
+
+            })
+
+            $("#login").click(function () {
+
+                let obj = {
+                    type: "get",
+                    url: "/login-process",
+                    data: {
+                        txtEmaill: $("#txtEmaill").val(),
+                        txtPwd: $("#txtPwd").val(),
+
+                    }
+                }
+                $.ajax(obj).done(function (resp) {
+                    alert(resp);
+
+
+                }).fail(function (err) {
+                    alert(err.statusText);
+                })
+
+            })
+
+            
+
+
+
+
+            $("#adminlogin").click(function(){                
+                if($("#adminpin").val()==123)
+                {location.href='adminpanel.html';}
+                else{
+                    alert("invalid pin")
+                }
+            })
+
+
+        })
+
+
+    </script>
+
+        <script>
+            function myMap() {
+            var mapProp= {
+              center:new google.maps.LatLng(30.212155248441395, 74.9523495525926),
+              zoom:5,
+            };
+            var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+            }
+            </script>
+            
+            <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=myMap"></script>
+            
+            
+
+</head>
+
+<body>
+<div style="background-color: whitesmoke">
+
+
+    <nav class="navbar" style="background-color: #d1d1d1;" >
+        <div class="container-fluid" style="background-color: #d1d1d1;">
+            <a class="navbar-brand" href="#">
+                <img src="/public/pics/2.jpg" alt="Logo" width="40" height="30" class="d-inline-block align-text-top"
+                    style="margin-right: 30px;">
+                promo.com
+            </a>
+            <form class="d-flex" role="search">
+                <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+                <button class="btn btn-outline-success" type="button" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">Signup</button>
+
+                <button class="btn btn-outline-success" type="button" style="margin-left:10px"
+                    data-bs-target="#exampleModallog" data-bs-toggle="modal">Login</button>
+
+                <button class="btn btn-outline-success" type="button" style="margin-left:10px " id="dash"
+                >our services</button>
+
+                <button class="btn btn-outline-success" type="button" style="margin-left:10px"
+                    data-bs-target="#adminpanel" data-bs-toggle="modal">our team</button>
+
+                <button class="btn btn-outline-success" type="button" style="margin-left:10px"
+                    data-bs-target="#adminpanel" data-bs-toggle="modal">reach us</button>
+
+            </form>
+        </div>
+    </nav>
+
+    <!-- Modal Signup-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Signup here<span id="msgSignup">*</span></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input type="email" id="txtEmail" name="txtEmail" class="form-control"
+                                id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" id="pwd" name="pwd" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <!-- <div class="mb-3 form-check">
+                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        </div> -->
+
+                        <select class="form-select" aria-label="Default select example" id="combo" name="combo">
+                            <option selected>Select your category</option>
+                            <option value="Client">Client</option>
+                            <option value="Influencer" name="infl" id="infl">Influencer</option>
+
+                        </select>
+                        <br>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="sgnup">Signup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login -->
+
+    <div class="modal fade" id="exampleModallog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login here</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input type="email" id="txtEmaill" name="txtEmaill" class="form-control"
+                                id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" id="txtPwd" name="txtPwd" class="form-control"
+                                id="exampleInputPassword1">
+                        </div>
+
+                        <span id="logspan">*</span>
+
+                        <br>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="login">Login</button>
+                    <br>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+
+    <!-- carousel-->
+    <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true" >
+        <div class="carousel-inner" style="height:800px;">
+            <div class="carousel-item active">
+                <img src="public/pics/Influencer-Marketing-2023-3.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="public/pics/influncer-marketing 1.jpeg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="public/pics/carousel3.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+     <!-- our  services-->
+
+     <div style="background-color: lightcoral;">
+        <center>
+            <h1>Our Services</h1>
+        </center>
+     </div>
+    <div class="container">
+     <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col">
+          <div class="card" style="border: 1px solid red;">
+            <img src="public/pics/collaborators2.jpg" class="card-img-top" alt="..." style="justify-content: center; border-radius: 50%; " >
+            <div class="card-body">
+              <center><h5 class="card-title">Collaborators</h5></center>
+              <p class="card-text">Our data shows that influencers who already know and love your brand are 7 times more likely to accept a collaboration.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+            <div class="card" style="border: 1px solid red;">
+              <img src="public/pics/meet and greet.jpg" class="card-img-top" alt="..." style="justify-content: center; border-radius: 50%; height: 150px; width: 150px; margin:auto; margin-top: 20px;" >
+              <div class="card-body">
+               <center> <h5 class="card-title">Meet And Greet</h5></center>
+                <p class="card-text">Learn, grow, and innovate with us.. Meet famous personalities and influencers across globe</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card" style="border: 1px solid red;">
+              <img src="public/pics/find influ.webp" class="card-img-top" alt="..." style="justify-content: center; border-radius: 50%; height: 150px; width: 150px; margin:auto; margin-top: 20px;" >
+              <div class="card-body">
+                <center><h5 class="card-title">Find influencers</h5></center>
+                <p class="card-text">Discover the true potential of influencer marketing with our compelling case studies , and grow with us </p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card" style="border: 1px solid red;">
+              <img src="public/pics/promotion.jpg" class="card-img-top" alt="..." style="justify-content: center; border-radius: 50%; height: 150px; width: 150px; margin:auto; " >
+              <div class="card-body">
+                <center><h5 class="card-title">Promotion</h5></center>
+                <p class="card-text">“Wishing you all the best on your well-deserved promotion. Your new role is lucky to have you, and I can't wait to see the good things to come.”</p>
+              </div>
+            </div>
+          </div>
+      </div> 
+    </div>
+
+     <!-- our  team-->
+
+     <div style="background-color: lightcoral;">
+        <center>
+            <h1>Our Team</h1>
+        </center>
+     </div>
+     <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="card mb-3" style="max-width: 540px; border-color: red;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="public/pics/bcebti.png" class="img-fluid rounded-start" alt="..." style="margin-top: 50px;">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">Under the guidance </h5>
+                      <h2 class="card-title">Rajesh Bansal sir</h2>
+                      <p class="card-text">20 Years experience in Training & Development. Founder of realJavaOnline.com, loves coding in Java(J2SE, J2EE), C++,PHP, Python, AngularJS, Android,MERN Stack(MongoDB,Express,ReactJS,NodeJS). </p>
+                      <p class="card-text"><small class="text-body-secondary">#Email : bcebti@gmail.com #Contact : 98722-46056</small></p>
+                      
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card mb-3" style="max-width: 540px; margin-left: 20px; border-color: red;" >
+                <div class="row g-0">
+                  <div class="col-md-4">
+                   <div class="container"> <img src="public/pics/jpeg.jpg" class="img-fluid rounded-start" alt="..." style="margin-top: 50px; border-radius: 80%;"></div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">Developed By</h5>
+                      <h2 class="card-title">Dhruv Bansal</h2>
+                      <p class="card-text">student of computer science at thapar institute of technology (patiala)
+                    </p>
+                      <p class="card-text"><small class="text-body-secondary">#Email : dbansal1_be23@thapar.edu #Contact : 63501-08765></small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+     </div>
+     
+     <!-- reach us-->
+
+     <div style="background-color: lightcoral;">
+        <center>
+            <h1>Reach us</h1>
+        </center>
+     </div>
+
+     <div id="googleMap" style="width:100%;height:400px;"></div>
+
+     <div style="background-color: lightcoral;">
+        
+            <h4>Copyright @BCE</h4>
+       
+     </div>
+</div>
+</body>
+
+</html>
