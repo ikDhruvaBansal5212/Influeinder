@@ -98,8 +98,8 @@
 
       $("#validate").click(function () {
 
-      //  document.getElementById("newpwd").disabled = false;
-       // document.getElementById("reppwd").disabled = false;
+        document.getElementById("newpwd").disabled = false;
+        document.getElementById("reppwd").disabled = false;
 
         let obj = {
           type: "get",
@@ -112,9 +112,6 @@
         }
 
         $.ajax(obj).done(function (resp) {
-
-          document.getElementById("newpwd").disabled = false;
-          document.getElementById("reppwd").disabled = false;
           console.log("chl pada");
 
         }).fail(function (err) {

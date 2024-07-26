@@ -279,11 +279,11 @@ app.get("/validate-old-password", function (req, resp) {
     let email = req.query.email;
     let oldpwd = req.query.oldpwd;
 
-    mysql.query("select pwd  from users where email=?", [email], function (err, result) {
-        console.log(result);
+    mysql.query("select *  from users where email=?", [email], function (err, result) {
+        console.log(result[0].pwd);
         if (err == null)//no error
         {
-            if (result == oldpwd) {
+            if (result[0].pwd == oldpwd) {
                 console.log("yes password valid");
                 return;
             }
